@@ -1,0 +1,127 @@
+<div class="container-fluid">
+  <div class="row">
+     <div class="col-md-12">
+        <form [formGroup]="searchForm">
+           <div class="form-group">
+              <label for="username">
+              User Name
+              </label>
+              <input type="text" class="form-control" id="username" formControlName="userName" (change)="getRepoList()" />
+           </div>
+           <div class="form-group">
+              <label for="repo">
+              List
+              </label>
+              <input type="text" class="form-control" id="repo" formControlName="repo" (change)="getRepoDetails()" />
+           </div>
+        </form>
+      </div>
+        <div class="col-md-6">
+            REPO LIST
+        <table class="table" *ngIf="showResults && list.length">
+           <thead>
+              <tr>
+                 <th>
+                    Username
+                 </th>
+                 <th>
+                    Reponame
+                 </th>
+                 <th>
+                    Forks
+                 </th>
+                 <th>
+                    Stars
+                 </th>
+                 <th>
+                    Language
+                 </th>
+                 <th>
+                    Action
+                 </th>
+              </tr>
+           </thead>
+           <tbody>
+              <tr *ngFor="let item of list">
+                 <td>
+                    {{item.owner.login}}
+                 </td>
+                 <td>
+                    {{item.name}} 
+                 </td>
+                 <td>
+                    {{item.forks_count}}
+                 </td>
+                 <td>
+                    {{item.stargazers_count}}
+                 </td>
+                 <td>
+                    {{item.language}}
+                 </td>
+                 <td>
+                    <button type="button" class="btn" [ngClass]="{'btn-primary': !isRepoPicked(item.id), 'btn-success': isRepoPicked(item.id)}" (click)="isRepoPicked(item.id)? null :pickRepo(item)">
+                    {{isRepoPicked(item.id)?'Picked':'Pick'}}
+                    </button>           
+                 </td>
+              </tr>
+           </tbody>
+        </table>
+      </div>  
+      <div class="col-md-6">
+        <div class="alert alert-danger" *ngIf="showResults && !list.length">
+           No Results Found!!!!
+        </div>
+        <div *ngIf="showResults && repoList.length">
+           PICKED REPO LIST
+        </div>
+        <table class="table" *ngIf="showResults && repoList.length">
+           <thead>
+              <tr>
+                 <th>
+                    Username
+                 </th>
+                 <th>
+                    Reponame
+                 </th>
+                 <th>
+                    Forks
+                 </th>
+                 <th>
+                    Stars
+                 </th>
+                 <th>
+                    Language
+                 </th>
+                 <th>
+                    Action
+                 </th>
+              </tr>
+           </thead>
+           <tbody>
+              <tr *ngFor="let item of repoList">
+                 <td>
+                    {{item.owner.login}}
+                 </td>
+                 <td>
+                    {{item.name}} 
+                 </td>
+                 <td>
+                    {{item.forks_count}}
+                 </td>
+                 <td>
+                    {{item.stargazers_count}}
+                 </td>
+                 <td>
+                    {{item.language}}
+                 </td>
+                 <td>
+                    <button type="button" class="btn btn-danger" (click)="pickRepo(item,true)">
+                    Unpick
+                    </button>           
+                 </td>
+              </tr>
+           </tbody>
+        </table>
+     </div>
+  </div>
+</div>
